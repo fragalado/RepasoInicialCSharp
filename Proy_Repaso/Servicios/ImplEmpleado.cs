@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Proy_Repaso.Servicios;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,10 @@ using System.Threading.Tasks;
 
 namespace Proy_Repaso
 {
-    internal class ImplEmpleado : InterfazEmpleado
+    /**
+     * Implementación de la interfaz empleado
+     */
+    class ImplEmpleado : InterfazEmpleado
     {
         public List<Empleado> RegistraEmpleado(List<Empleado> listaBD)
         {
@@ -120,7 +124,7 @@ namespace Proy_Repaso
                     Console.WriteLine("\t\t\t║                               ║");
                     Console.WriteLine("\t\t\t╚═══════════════════════════════╝");
                     Console.Write("\n\tIntroduce una opción: ");
-                    opcion = Convert.ToInt32(Console.ReadLine());
+                    opcion = Console.ReadKey().KeyChar - '0';
 
                     if(opcion <0 || opcion > 7)
                     {
@@ -176,12 +180,53 @@ namespace Proy_Repaso
 
         public void ExportarEmpleado(List<Empleado> listaBD)
         {
-            // Preguntamos si se quiere exportar todos los empleados o no
-            bool todos = PreguntaSiNo("¿Quiere exportar todos los empleados al fichero? [s=Si/n=No]");
+            // Inicializamos la interfaz ficheros
+            InterfazFicheros intF = new ImplFicheros();
 
-            if (todos)
+            if(listaBD.Count <= 0)
+                Console.WriteLine("\n\t** Error: No existe ningun empleado **");
+            else
             {
+                // Preguntamos si se quiere exportar todos los empleados o no
+                bool todos = PreguntaSiNo("¿Quiere exportar todos los empleados al fichero? [s=Si/n=No]");
 
+                if (todos)
+                {
+                    // Exportamos todos los empleados
+                    intF.EscribirFichero(listaBD, "c:\\FicherosProg\\CSharp\\repaso.txt");
+                }
+                else
+                {
+                    // Pedimos el id del empleado
+                    Console.Write("\n\tIntroduzca el id del empleado a exportar: ");
+                    int id = Convert.ToInt32(Console.ReadLine());
+
+                    // Buscamos el id en la lista, si lo encontramos lo guardamos en una variable
+                    Empleado e = new Empleado();
+                    bool encontrado = false;
+
+                    // Recorremos la lista para buscar el empleado
+                    foreach (Empleado aux in listaBD)
+                    {
+                        // Si el id del objeto es mas grande que el id de la variable entonces lo guardamos
+                        if (aux.Id == id)
+                        {
+                            e = aux;
+                            encontrado = true;
+                            break;
+                        }
+                    }
+
+                    // Si lo encontramos
+                    if (encontrado)
+                    {
+                        List<Empleado> listAuxiliar = new List<Empleado>();
+                        listAuxiliar.Add(e);
+                        intF.EscribirFichero(listAuxiliar, "c:\\FicherosProg\\CSharp\\repaso.txt");
+                    }
+                    else
+                        Console.WriteLine("\n\t** Error: El id introducido no existe **");
+                }
             }
         }
 

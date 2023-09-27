@@ -9,7 +9,7 @@ namespace Proy_Repaso
     /**
      * Interfaz que define los métodos que darán servicio a Empleados
      */
-    internal interface InterfazEmpleado
+    interface InterfazEmpleado
     {
         /**
          * Método que registra un empleado con los datos introducidos por consola.

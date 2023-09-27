@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Proy_Repaso
 {
-    internal class Program
+    class Program
     {
         static void Main(string[] args)
         {
@@ -51,7 +51,14 @@ namespace Proy_Repaso
                         break;
                     case 3:
                         // Exportar empleado/s
-                        Console.WriteLine("Exportar empleado");
+                        try
+                        {
+                            intE.ExportarEmpleado(listaBD);
+                        }
+                        catch (Exception)
+                        {
+                            Console.WriteLine("\n\t** Error: No se ha podido exportar el empleado **");
+                        }
                         break;
                 }
 
